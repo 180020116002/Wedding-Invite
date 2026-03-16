@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Sam & Sofia — Wedding</title>
+<title>Sam & Sofia — Shadi 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" onerror="window._lottiePrimaryFailed=true"></script>
 <script>
@@ -825,7 +825,7 @@ body{font-family:'Cormorant Garamond',serif;background:var(--cream);overflow-x:h
 }
 
 /* Typing */
-#vb-typing { display:none; align-items:flex-end; gap:8px; }
+#vb-typing { display:none; align-items:flex-end; gap:8px; padding:4px 12px 8px; }
 #vb-typing.on { display:flex; align-items:flex-end; }
 .vb-dots {
   padding:12px 16px;
@@ -854,8 +854,33 @@ body{font-family:'Cormorant Garamond',serif;background:var(--cream);overflow-x:h
 }
 .vb-chip:hover, .vb-chip:active { background:rgba(201,147,58,.2); border-color:rgba(232,184,75,.6); color:#e8b84b; transform:translateY(-1px); }
 
-/* Chip area bottom padding */
+/* Chip area */
 #vb-chips { padding-bottom: 16px; }
+
+/* Input row */
+#vb-inp-row {
+  flex-shrink:0; display:flex; align-items:center; gap:8px;
+  padding:8px 12px 14px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+#vb-inp {
+  flex:1; background:rgba(255,255,255,.06); border:1px solid rgba(201,147,58,.2);
+  border-radius:20px; padding:9px 14px;
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px;
+  color:rgba(255,255,255,.9); outline:none;
+  transition:border-color .2s, background .2s;
+}
+#vb-inp::placeholder { color:rgba(201,147,58,.35); }
+#vb-inp:focus { border-color:rgba(201,147,58,.5); background:rgba(255,255,255,.09); }
+#vb-send {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0; border:none; cursor:pointer;
+  background:linear-gradient(145deg,#e8b84b,#c9933a); color:rgba(40,0,8,.9);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 10px rgba(201,147,58,.4);
+  transition:transform .2s, opacity .2s;
+}
+#vb-send:hover { transform:scale(1.1); }
+#vb-send:disabled { opacity:.3; cursor:default; transform:none; }
 
 
 </style>
@@ -866,7 +891,7 @@ body{font-family:'Cormorant Garamond',serif;background:var(--cream);overflow-x:h
 <!-- ════════════ HERO ════════════ -->
 <div id="navbar">
   <button id="nav-chat-btn" onclick="vbToggle()">
-    <span class="nav-icon">🌸</span> Ask Vivah
+    <span class="nav-icon">🌸</span>
   </button>
   <button id="nav-game-btn" onclick="openGame()">
     <span class="nav-icon">💍</span> Ring Toss
@@ -967,20 +992,6 @@ body{font-family:'Cormorant Garamond',serif;background:var(--cream);overflow-x:h
 
 <div class="band"></div>
 
-<!-- ════════════ FOOTER ════════════ -->
-<div class="footer">
-  <canvas id="footer-canvas"></canvas>
-  <div class="footer-inner">
-    <div class="footer-tag">Shubh Vivah · 2026</div>
-    <div class="footer-rule"></div>
-    <div class="footer-names">Sam<span class="footer-weds">weds</span>Sofia</div>
-    <div class="footer-rule2"></div>
-    <div class="footer-date">28 May 2026 · Thursday</div>
-    <div class="footer-venue">Rajmahal Palace · Jaipur, Rajasthan, India</div>
-    <div class="footer-div">शुभ विवाह</div>
-    <span class="footer-hearts">💛 🌸 💛</span>
-  </div>
-</div>
 
 
 <!-- ════════════ EVENTS ════════════ -->
@@ -1242,7 +1253,7 @@ body{font-family:'Cormorant Garamond',serif;background:var(--cream);overflow-x:h
 
 
 <!-- ══ VIVAH CHATBOT ══ -->
-<button id="vb-fab" onclick="vbToggle()" aria-label="Ask Vivah">
+<button id="vb-fab" onclick="vbToggle()" aria-label="Chat with Vivah">
   <span id="vb-fab-icon">✦</span>
   <div id="vb-notif"></div>
 </button>
@@ -1265,13 +1276,21 @@ body{font-family:'Cormorant Garamond',serif;background:var(--cream);overflow-x:h
   </div>
 
   <div id="vb-msgs">
-    <div id="vb-typing">
-      <div class="vb-av-sm">🌸</div>
-      <div class="vb-dots"><div class="vb-d"></div><div class="vb-d"></div><div class="vb-d"></div></div>
-    </div>
+  </div>
+
+  <div id="vb-typing">
+    <div class="vb-av-sm">🌸</div>
+    <div class="vb-dots"><div class="vb-d"></div><div class="vb-d"></div><div class="vb-d"></div></div>
   </div>
 
   <div id="vb-chips"></div>
+
+  <div id="vb-inp-row">
+    <input id="vb-inp" type="text" placeholder="Type your question…" maxlength="200" autocomplete="off" />
+    <button id="vb-send" onclick="vbSend()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
 
 
 </div>
@@ -2179,562 +2198,160 @@ function closeGame(){
    VIVAH CHATBOT JS
 ━━━━━━━━━━━━━━━━━━ */
 (function(){
-  var isOpen=false, busy=false, hist=[], inited=false;
+  var isOpen=false, busy=false, inited=false, chipRound=0;
 
-  // ── Predefined knowledge base ──
   var KB = [
-    { keys: ["date","when","day","28","may","thursday"],
+    { keys: ["date","when","day","28","may","thursday","wedding day","big day"],
       ans: "The big day is Thursday, 28 May 2026! Mark your calendars - it is going to be a celebration to remember." },
-    { keys: ["haldi","turmeric","yellow","haldi ceremony"],
-      ans: "Haldi is on Wednesday 27 May at 10:00 AM in the Palace Courtyard. Wear yellow and white ONLY - turmeric stains everything, and that is the whole point!" },
-    { keys: ["reception","reception evening"],
-      ans: "The Reception is on Thursday 28 May at 7:30 PM at the Main Lawn. Dress code is Black Tie or Indian Formal - come dressed to dazzle!" },
+    { keys: ["venue","where","location","palace","jaipur","rajmahal","address","place","held"],
+      ans: "All celebrations are at Rajmahal Palace, Palace Road, Near City Palace, Jaipur 302002, Rajasthan. A royal setting for a royal couple!" },
+    { keys: ["all events","schedule","programme","program","itinerary","events","functions","list","ceremonies"],
+      ans: "Four gorgeous events: Mehndi (Tue 26 May, 4pm), Haldi (Wed 27 May, 10am), Sangeet (Wed 27 May, 7:30pm), Wedding Ceremony (Thu 28 May, 11am), Reception (Thu 28 May, 7:30pm). All at Rajmahal Palace, Jaipur!" },
+    { keys: ["time","timing","start","begin","what time","when does","hours"],
+      ans: "Full timeline: Mehndi 26 May 4:00 PM, Haldi 27 May 10:00 AM, Sangeet 27 May 7:30 PM, Ceremony 28 May 11:00 AM, Reception 28 May 7:30 PM. All at Rajmahal Palace!" },
     { keys: ["mehndi","henna","mehendi"],
       ans: "Mehndi is on Tuesday 26 May at 4:00 PM in the Garden Pavilion. Wear greens and yellows - and be ready to get beautifully inked!" },
-    { keys: ["sangeet","music","dance","performance","evening"],
+    { keys: ["haldi","turmeric","yellow ceremony"],
+      ans: "Haldi is on Wednesday 27 May at 10:00 AM in the Palace Courtyard. Strict dress code: yellow and white ONLY - turmeric stains are guaranteed and totally part of the fun!" },
+    { keys: ["sangeet","music night","dance night","garba","performance"],
       ans: "Sangeet is on Wednesday 27 May at 7:30 PM in the Grand Durbar Hall. Dress in jewel tones and traditional wear - the dance floor will be on fire!" },
-    { keys: ["ceremony","wedding","nikah","pheras","11","morning"],
-      ans: "The wedding ceremony begins at 11:00 AM on 28 May at the Main Lawn of Rajmahal Palace. Arrive a little early to soak in the magic!" },
-    { keys: ["venue","where","location","palace","jaipur","rajmahal","address"],
-      ans: "All celebrations are at Rajmahal Palace, Palace Road, Near City Palace, Jaipur 302002, Rajasthan. A royal setting for a royal couple!" },
-    { keys: ["dress","wear","colour","color","code","outfit","attire","clothes"],
+    { keys: ["reception","evening party","dinner","evening event"],
+      ans: "The Reception is on Thursday 28 May at 7:30 PM at the Main Lawn. Dress code is Black Tie or Indian Formal - come dressed to dazzle the night away!" },
+    { keys: ["dress","wear","attire","outfit","clothes","colour","color","dress code","what to wear"],
       ans: "Each event has its own dress code - Mehndi: Greens and Yellows, Haldi: Yellow and White only, Sangeet: Jewel Tones, Wedding and Reception: Black Tie or Indian Formal. Avoid white, black and red - those are reserved for the bride!" },
-    { keys: ["rsvp","confirm","reply","respond","deadline","april","15"],
+    { keys: ["rsvp","confirm","reply","attend","coming","join","register"],
       ans: "Please RSVP by 15 April 2026 - use the RSVP form on this page. Sam and Sofia would love to know you are coming!" },
-    { keys: ["event","events","all","schedule","programme","program","itinerary"],
-      ans: "Four gorgeous events await! Mehndi (26 May, 4pm), Haldi (27 May, 10am), Sangeet (27 May, 7:30pm), Wedding Ceremony (28 May, 11am), Reception (28 May, 7:30pm). All at Rajmahal Palace, Jaipur!" },
-    { keys: ["gift","shagun","registry","present","money","cash"],
+    { keys: ["gift","shagun","registry","present","contribution"],
       ans: "Your presence is the greatest gift of all! If you would like to contribute, there is a Shagun section on this page with details for the couple." },
-    { keys: ["transport","travel","how","get","car","taxi","auto","airport","train","flight","hotel","stay","accommodation"],
-      ans: "Jaipur is well connected by air, rail and road from most cities. The venue is near City Palace - taxis and autos are easy to find. Check the Transport section on this page for more details!" },
-    { keys: ["who","couple","sam","sofia","bride","groom"],
+    { keys: ["transport","travel","get there","directions","taxi","auto","car","cab","airport","train","how to reach"],
+      ans: "Jaipur is well connected by air, rail and road. The venue is near City Palace - taxis and autos are easy to find. Check the Transport section on this page for more details!" },
+    { keys: ["hotel","stay","accommodation","where to stay","room","nearby hotel"],
+      ans: "Jaipur has wonderful hotels near the venue. The Transport and Stay section on this page has recommendations for your convenience!" },
+    { keys: ["couple","sam","sofia","bride","groom","about them","love story"],
       ans: "Sam is the dashing groom and Sofia is the radiant bride! Together they are embarking on the most beautiful journey - and they are so glad you are part of it." },
-    { keys: ["time","start","begin","pm","am"],
-      ans: "Full timeline: Mehndi 26 May 4:00 PM, Haldi 27 May 10:00 AM, Sangeet 27 May 7:30 PM, Ceremony 28 May 11:00 AM, Reception 28 May 7:30 PM. All at Rajmahal Palace!" },
-    { keys: ["kids","children","child","family","babies","infant"],
+    { keys: ["kids","children","child","babies","infant","family","little ones"],
       ans: "Children are most welcome to join the celebrations! For any specific requirements, reach out to Sam and Sofia directly." },
-    { keys: ["food","eat","menu","vegetarian","vegan","halal","dietary"],
+    { keys: ["food","eat","menu","vegetarian","vegan","halal","dietary","cuisine"],
       ans: "Expect a magnificent spread of Rajasthani and multi-cuisine delights! Dietary preferences can be noted in your RSVP - the couple will do their best to accommodate everyone." },
-    { keys: ["photography","photo","camera","picture","video"],
-      ans: "A professional photographer and videographer will capture every magical moment! Feel free to click away - just remember to be present and enjoy the celebrations too!" },
-    { keys: ["hello","hi","hey","namaste","hola","sup","greetings"],
-      ans: "Namaste! So lovely to have you here! I am Vivah, your guide to Sam and Sofia wedding. Ask me anything - dates, dress codes, venues, events. I am all yours!" },
-    { keys: ["thank","thanks","thankyou","appreciate","great","awesome","perfect","wonderful"],
-      ans: "You are so welcome! Sam and Sofia are counting down the days to celebrate with you. Is there anything else you would like to know?" }
-  ];;
+    { keys: ["photo","photography","camera","picture","video","photographer","selfie"],
+      ans: "A professional photographer and videographer will capture every magical moment! Feel free to click away - just remember to be present and enjoy the celebrations!" },
+    { keys: ["hello","hi","hey","namaste","hola","greetings","good morning","good evening"],
+      ans: "Namaste! So lovely to have you here! I am Vivah, your guide to Sam and Sofia wedding. Ask me anything or tap a quick button below!" },
+    { keys: ["thank","thanks","thank you","appreciate","great","awesome","perfect","wonderful"],
+      ans: "You are so welcome! Sam and Sofia are counting down the days to celebrate with you. Anything else I can help with?" }
+  ];
 
-  function getBotReply(text){
-    var t = text.toLowerCase().replace(/[^a-z0-9 ]/g,'');
-    var words = t.split(/\s+/);
+  function getBotReply(raw) {
+    var t = raw.toLowerCase().replace(/[^\w\s]/g," ").replace(/\s+/g," ").trim();
     var best = null, bestScore = 0;
-    for(var i=0;i<KB.length;i++){
-      var score=0;
-      for(var j=0;j<KB[i].keys.length;j++){
-        if(t.indexOf(KB[i].keys[j])!==-1) score+=2;
-        else for(var k=0;k<words.length;k++) if(words[k].indexOf(KB[i].keys[j])!==-1 || KB[i].keys[j].indexOf(words[k])!==-1) score+=1;
+    for (var i = 0; i < KB.length; i++) {
+      var score = 0;
+      for (var j = 0; j < KB[i].keys.length; j++) {
+        var kw = KB[i].keys[j];
+        if (t.indexOf(kw) !== -1) score += kw.split(" ").length * 2;
       }
-      if(score>bestScore){bestScore=score;best=KB[i];}
+      if (score > bestScore) { bestScore = score; best = KB[i]; }
     }
-    if(bestScore>0) return best.ans;
-    return "I'm not sure about that one! 🙏 For anything specific, feel free to reach out to Sam & Sofia directly. Is there anything else I can help with?";
+    if (bestScore > 0) return best.ans;
+    return "Hmm, I am not sure about that one! For anything specific, feel free to reach out to Sam and Sofia directly. Or tap one of the buttons below!";
   }
 
   var CHIP_SETS = [
-    ['📅 Wedding date?','📍 Venue?','🎉 All events?','⏰ Event times?'],
-    ['🌿 Mehndi?','🌼 Haldi?','🎶 Sangeet?','💍 Reception?'],
-    ['👗 Dress code?','💌 RSVP?','🎁 Gifts & Shagun?','🏨 Travel & stay?'],
-    ['🍽️ Food & menu?','👶 Kids welcome?','📸 Photography?','💑 The couple?']
+    ["Wedding date","Venue","All events","Event times"],
+    ["Mehndi","Haldi","Sangeet","Reception"],
+    ["Dress code","RSVP","Gifts & Shagun","Travel & stay"],
+    ["Food & menu","Kids welcome","Photography","The couple"]
   ];
-  var chipRound=0;
 
-  function ts(){var d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
-  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-  function $id(id){return document.getElementById(id);}
-  function scrl(){var m=$id('vb-msgs');if(m)m.scrollTop=m.scrollHeight;}
+  function ts() {
+    var d = new Date();
+    return d.getHours().toString().padStart(2,"0")+":"+d.getMinutes().toString().padStart(2,"0");
+  }
+  function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function $id(id) { return document.getElementById(id); }
+  function scrl() { var w=$id("vb-win"); if(w) w.scrollTop=w.scrollHeight; }
 
-  function addMsg(role,text){
-    if(role!=='system')hist.push({role:role,content:text});
-    var msgs=$id('vb-msgs'), typing=$id('vb-typing');
-    if(!msgs)return;
-    var row=document.createElement('div');
-    row.className='vb-row '+(role==='assistant'?'bot':'me');
-    var avL=role==='assistant'?'<div class="vb-av-sm">🌸</div>':'';
-    var avR=role!=='assistant'?'<div class="vb-av-sm" style="font-size:10px">💍</div>':'';
-    row.innerHTML=avL+'<div class="vb-col"><div class="vb-bbl">'+esc(text)+'</div><div class="vb-ts">'+ts()+'</div></div>'+avR;
-    msgs.insertBefore(row,typing);
-    scrl();
+  function addMsg(role, text) {
+    var msgs=$id("vb-msgs"); if(!msgs)return;
+    var row=document.createElement("div");
+    row.className="vb-row "+(role==="assistant"?"bot":"me");
+    var avL=role==="assistant"?'<div class="vb-av-sm">\uD83C\uDF38</div>':"";
+    var avR=role!=="assistant"?'<div class="vb-av-sm" style="font-size:10px">\uD83D\uDC8D</div>':"";
+    row.innerHTML=avL+'<div class="vb-col"><div class="vb-bbl">'+esc(text)+'</div><div class="vb-ts">'+ts()+"</div></div>"+avR;
+    msgs.appendChild(row); scrl();
   }
 
-  function setTyping(v){
-    var t=$id('vb-typing');
-    if(t){t.classList.toggle('on',v);}
-    if(v)scrl();
+  function setTyping(v) {
+    var t=$id("vb-typing"); if(t) t.classList.toggle("on",v); if(v) scrl();
   }
 
-  function setChips(arr){
-    var el=$id('vb-chips');if(!el)return;
-    el.innerHTML='';
+  function setChips(arr) {
+    var el=$id("vb-chips"); if(!el)return;
+    el.innerHTML="";
     arr.forEach(function(c){
-      var b=document.createElement('button');
-      b.className='vb-chip';b.textContent=c;
-      b.onclick=function(){el.innerHTML='';doSend(c);};
+      var b=document.createElement("button");
+      b.className="vb-chip"; b.textContent=c;
+      b.onclick=function(){ doSend(c); };
       el.appendChild(b);
     });
   }
 
-  window.vbToggle=function(){
-    isOpen=!isOpen;
-    var fab=$id('vb-fab'), win=$id('vb-win');
-    if(fab)fab.classList.toggle('open',isOpen);
-    if(win)win.classList.toggle('open',isOpen);
-    var dot=$id('vb-notif');if(dot)dot.classList.remove('show');
-    if(isOpen&&!inited){
-      inited=true;
-      setTimeout(function(){
-        addMsg('assistant','Namaste! \uD83D\uDE4F I\'m Vivah, your guide to Sam & Sofia\'s wedding. Tap a button below to find out more!');
-        setChips(CHIP_SETS[0]);
-      },300);
-    }
-    if(isOpen){setTimeout(function(){var i=$id('vb-inp');if(i)i.focus();},350);}
-  };
-
-  function doSend(text){
-    addMsg('user',text);
+  function doSend(text) {
+    if(busy)return;
+    var inp=$id("vb-inp");
+    if(!text && inp) text=inp.value.trim();
+    if(!text)return;
+    if(inp) inp.value="";
     busy=true;
-    var btn=$id('vb-send');if(btn)btn.disabled=true;
+    var chips=$id("vb-chips"); if(chips) chips.innerHTML="";
+    var btn=$id("vb-send"); if(btn) btn.disabled=true;
+    addMsg("user",text);
     setTyping(true);
-    var delay=600+Math.random()*500;
     setTimeout(function(){
       setTyping(false);
-      var reply=getBotReply(text);
-      addMsg('assistant',reply);
+      addMsg("assistant", getBotReply(text));
       chipRound=(chipRound+1)%CHIP_SETS.length;
       setChips(CHIP_SETS[chipRound]);
-      busy=false;
-      if(btn)btn.disabled=false;
-    },delay);
+      busy=false; if(btn) btn.disabled=false;
+    }, 1000+Math.random()*800);
   }
 
-  // Called by lottie complete — reveal FAB
-  window.vbReveal=function(){
-    var fab=$id('vb-fab');
-    if(!fab)return;
-    fab.classList.add('ready');
-    setTimeout(function(){var d=$id('vb-notif');if(d)d.classList.add('show');},1400);
+  window.vbSend=function(){
+    var inp=$id("vb-inp"); if(inp&&inp.value.trim()) doSend(inp.value.trim());
   };
-  // Safety: if lottie already done before this script ran, reveal immediately
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){
-      var fab=$id('vb-fab');
-      if(fab && document.body.style.overflow!=='hidden'){
-        fab.classList.add('ready');
-      }
-    }, 200);
-  });
-
-})();
-
-
-</script>
-
-
-
-
-
-
-</body>
-</htmlans: ``
-    },
-    {
-      keys: ['thank','thanks','thankyou','appreciate','great','awesome','perfect','wonderful'],
-      ans: `You`re so welcome! 🌸 Sam & Sofia are counting down the days to celebrate with you. Is there anything else you'd like to know?'
-    }
-  ];
-
-  function getBotReply(text){
-    var t = text.toLowerCase().replace(/[^a-z0-9 ]/g,'');
-    var words = t.split(/\s+/);
-    var best = null, bestScore = 0;
-    for(var i=0;i<KB.length;i++){
-      var score=0;
-      for(var j=0;j<KB[i].keys.length;j++){
-        if(t.indexOf(KB[i].keys[j])!==-1) score+=2;
-        else for(var k=0;k<words.length;k++) if(words[k].indexOf(KB[i].keys[j])!==-1 || KB[i].keys[j].indexOf(words[k])!==-1) score+=1;
-      }
-      if(score>bestScore){bestScore=score;best=KB[i];}
-    }
-    if(bestScore>0) return best.ans;
-    return "I'm not sure about that one! 🙏 For anything specific, feel free to reach out to Sam & Sofia directly. Is there anything else I can help with?";
-  }
-
-  var CHIP_SETS = [
-    ['📅 Wedding date?','📍 Venue?','🎉 All events?','⏰ Event times?'],
-    ['🌿 Mehndi?','🌼 Haldi?','🎶 Sangeet?','💍 Reception?'],
-    ['👗 Dress code?','💌 RSVP?','🎁 Gifts & Shagun?','🏨 Travel & stay?'],
-    ['🍽️ Food & menu?','👶 Kids welcome?','📸 Photography?','💑 The couple?']
-  ];
-  var chipRound=0;
-
-  function ts(){var d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
-  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-  function $id(id){return document.getElementById(id);}
-  function scrl(){var m=$id('vb-msgs');if(m)m.scrollTop=m.scrollHeight;}
-
-  function addMsg(role,text){
-    if(role!=='system')hist.push({role:role,content:text});
-    var msgs=$id('vb-msgs'), typing=$id('vb-typing');
-    if(!msgs)return;
-    var row=document.createElement('div');
-    row.className='vb-row '+(role==='assistant'?'bot':'me');
-    var avL=role==='assistant'?'<div class="vb-av-sm">🌸</div>':'';
-    var avR=role!=='assistant'?'<div class="vb-av-sm" style="font-size:10px">💍</div>':'';
-    row.innerHTML=avL+'<div class="vb-col"><div class="vb-bbl">'+esc(text)+'</div><div class="vb-ts">'+ts()+'</div></div>'+avR;
-    msgs.insertBefore(row,typing);
-    scrl();
-  }
-
-  function setTyping(v){
-    var t=$id('vb-typing');
-    if(t){t.classList.toggle('on',v);}
-    if(v)scrl();
-  }
-
-  function setChips(arr){
-    var el=$id('vb-chips');if(!el)return;
-    el.innerHTML='';
-    arr.forEach(function(c){
-      var b=document.createElement('button');
-      b.className='vb-chip';b.textContent=c;
-      b.onclick=function(){el.innerHTML='';doSend(c);};
-      el.appendChild(b);
-    });
-  }
 
   window.vbToggle=function(){
     isOpen=!isOpen;
-    var fab=$id('vb-fab'), win=$id('vb-win');
-    if(fab)fab.classList.toggle('open',isOpen);
-    if(win)win.classList.toggle('open',isOpen);
-    var dot=$id('vb-notif');if(dot)dot.classList.remove('show');
+    var fab=$id("vb-fab"), win=$id("vb-win");
+    if(fab) fab.classList.toggle("open",isOpen);
+    if(win) win.classList.toggle("open",isOpen);
+    var dot=$id("vb-notif"); if(dot) dot.classList.remove("show");
     if(isOpen&&!inited){
       inited=true;
+      setTyping(true);
       setTimeout(function(){
-        addMsg('assistant','Namaste! \uD83D\uDE4F I\'m Vivah, your guide to Sam & Sofia\'s wedding. Tap a button below to find out more!');
+        setTyping(false);
+        addMsg("assistant","Namaste! I am Vivah, your guide to Sam and Sofia wedding celebrations. Tap a button or type your question below!");
         setChips(CHIP_SETS[0]);
-      },300);
+      },1200);
     }
-    if(isOpen){setTimeout(function(){var i=$id('vb-inp');if(i)i.focus();},350);}
+    if(isOpen) setTimeout(function(){ var i=$id("vb-inp"); if(i) i.focus(); },400);
   };
 
-  function doSend(text){
-    addMsg('user',text);
-    busy=true;
-    var btn=$id('vb-send');if(btn)btn.disabled=true;
-    setTyping(true);
-    var delay=600+Math.random()*500;
-    setTimeout(function(){
-      setTyping(false);
-      var reply=getBotReply(text);
-      addMsg('assistant',reply);
-      chipRound=(chipRound+1)%CHIP_SETS.length;
-      setChips(CHIP_SETS[chipRound]);
-      busy=false;
-      if(btn)btn.disabled=false;
-    },delay);
-  }
-
-  // Called by lottie complete — reveal FAB
-  window.vbReveal=function(){
-    var fab=$id('vb-fab');
-    if(!fab)return;
-    fab.classList.add('ready');
-    setTimeout(function(){var d=$id('vb-notif');if(d)d.classList.add('show');},1400);
-  };
-  // Safety: if lottie already done before this script ran, reveal immediately
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){
-      var fab=$id('vb-fab');
-      if(fab && document.body.style.overflow!=='hidden'){
-        fab.classList.add('ready');
-      }
-    }, 200);
+  document.addEventListener("DOMContentLoaded",function(){
+    var inp=$id("vb-inp");
+    if(inp) inp.addEventListener("keydown",function(e){ if(e.key==="Enter") window.vbSend(); });
   });
 
-})();
-
-
-</script>
-
-
-
-
-
-
-</body>
-</htmlans: ``
-    },
-    {
-      keys: ['time','schedule','start','begin','pm','am'],
-      ans: `Here`s the full timeline ⏰ — Mehndi: 26 May 4:00 PM · Haldi: 27 May 10:00 AM · Sangeet: 27 May 7:30 PM · Ceremony: 28 May 11:00 AM · Reception: 28 May 7:30 PM. All at Rajmahal Palace!'
-    },
-    {
-      keys: ['kids','children','child','family','babies','infant'],
-      ans: `Children are most welcome to join the celebrations! 👶 For any specific requirements, reach out to Sam & Sofia directly.`
-    },
-    {
-      keys: ['food','eat','menu','vegetarian','vegan','halal','dietary'],
-      ans: `Expect a magnificent spread of Rajasthani and multi-cuisine delights! 🍽️ Dietary preferences can be noted in your RSVP — the couple will do their best to accommodate everyone.`
-    },
-    {
-      keys: ['photography','photo','camera','picture','video'],
-      ans: `A professional photographer & videographer will capture every magical moment! 📸 Feel free to click away — just remember to be present and enjoy the celebrations too!`
-    },
-    {
-      keys: ['hello','hi','hey','namaste','hola','sup','greetings'],
-      ans: `Namaste! 🙏 So lovely to have you here! I'm Vivah, your guide to Sam & Sofia's wedding. Ask me anything — dates, dress codes, venues, events… I'm all yours!`
-    },
-    {
-      keys: ['thank','thanks','thankyou','appreciate','great','awesome','perfect','wonderful'],
-      ans: `You`re so welcome! 🌸 Sam & Sofia are counting down the days to celebrate with you. Is there anything else you'd like to know?'
-    }
-  ];
-
-  function getBotReply(text){
-    var t = text.toLowerCase().replace(/[^a-z0-9 ]/g,'');
-    var words = t.split(/\s+/);
-    var best = null, bestScore = 0;
-    for(var i=0;i<KB.length;i++){
-      var score=0;
-      for(var j=0;j<KB[i].keys.length;j++){
-        if(t.indexOf(KB[i].keys[j])!==-1) score+=2;
-        else for(var k=0;k<words.length;k++) if(words[k].indexOf(KB[i].keys[j])!==-1 || KB[i].keys[j].indexOf(words[k])!==-1) score+=1;
-      }
-      if(score>bestScore){bestScore=score;best=KB[i];}
-    }
-    if(bestScore>0) return best.ans;
-    return "I'm not sure about that one! 🙏 For anything specific, feel free to reach out to Sam & Sofia directly. Is there anything else I can help with?";
-  }
-
-  var CHIP_SETS = [
-    ['📅 Wedding date?','📍 Venue?','🎉 All events?','⏰ Event times?'],
-    ['🌿 Mehndi?','🌼 Haldi?','🎶 Sangeet?','💍 Reception?'],
-    ['👗 Dress code?','💌 RSVP?','🎁 Gifts & Shagun?','🏨 Travel & stay?'],
-    ['🍽️ Food & menu?','👶 Kids welcome?','📸 Photography?','💑 The couple?']
-  ];
-  var chipRound=0;
-
-  function ts(){var d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
-  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-  function $id(id){return document.getElementById(id);}
-  function scrl(){var m=$id('vb-msgs');if(m)m.scrollTop=m.scrollHeight;}
-
-  function addMsg(role,text){
-    if(role!=='system')hist.push({role:role,content:text});
-    var msgs=$id('vb-msgs'), typing=$id('vb-typing');
-    if(!msgs)return;
-    var row=document.createElement('div');
-    row.className='vb-row '+(role==='assistant'?'bot':'me');
-    var avL=role==='assistant'?'<div class="vb-av-sm">🌸</div>':'';
-    var avR=role!=='assistant'?'<div class="vb-av-sm" style="font-size:10px">💍</div>':'';
-    row.innerHTML=avL+'<div class="vb-col"><div class="vb-bbl">'+esc(text)+'</div><div class="vb-ts">'+ts()+'</div></div>'+avR;
-    msgs.insertBefore(row,typing);
-    scrl();
-  }
-
-  function setTyping(v){
-    var t=$id('vb-typing');
-    if(t){t.classList.toggle('on',v);}
-    if(v)scrl();
-  }
-
-  function setChips(arr){
-    var el=$id('vb-chips');if(!el)return;
-    el.innerHTML='';
-    arr.forEach(function(c){
-      var b=document.createElement('button');
-      b.className='vb-chip';b.textContent=c;
-      b.onclick=function(){el.innerHTML='';doSend(c);};
-      el.appendChild(b);
-    });
-  }
-
-  window.vbToggle=function(){
-    isOpen=!isOpen;
-    var fab=$id('vb-fab'), win=$id('vb-win');
-    if(fab)fab.classList.toggle('open',isOpen);
-    if(win)win.classList.toggle('open',isOpen);
-    var dot=$id('vb-notif');if(dot)dot.classList.remove('show');
-    if(isOpen&&!inited){
-      inited=true;
-      setTimeout(function(){
-        addMsg('assistant','Namaste! \uD83D\uDE4F I\'m Vivah, your guide to Sam & Sofia\'s wedding. Tap a button below to find out more!');
-        setChips(CHIP_SETS[0]);
-      },300);
-    }
-    if(isOpen){setTimeout(function(){var i=$id('vb-inp');if(i)i.focus();},350);}
-  };
-
-  function doSend(text){
-    addMsg('user',text);
-    busy=true;
-    var btn=$id('vb-send');if(btn)btn.disabled=true;
-    setTyping(true);
-    var delay=600+Math.random()*500;
-    setTimeout(function(){
-      setTyping(false);
-      var reply=getBotReply(text);
-      addMsg('assistant',reply);
-      chipRound=(chipRound+1)%CHIP_SETS.length;
-      setChips(CHIP_SETS[chipRound]);
-      busy=false;
-      if(btn)btn.disabled=false;
-    },delay);
-  }
-
-  // Called by lottie complete — reveal FAB
   window.vbReveal=function(){
-    var fab=$id('vb-fab');
-    if(!fab)return;
-    fab.classList.add('ready');
-    setTimeout(function(){var d=$id('vb-notif');if(d)d.classList.add('show');},1400);
+    var fab=$id("vb-fab"); if(!fab)return;
+    fab.classList.add("ready");
+    setTimeout(function(){ var d=$id("vb-notif"); if(d) d.classList.add("show"); },1400);
   };
-  // Safety: if lottie already done before this script ran, reveal immediately
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){
-      var fab=$id('vb-fab');
-      if(fab && document.body.style.overflow!=='hidden'){
-        fab.classList.add('ready');
-      }
-    }, 200);
-  });
-
-})();
-
-
-</script>
-
-
-
-
-
-
-</body>
-</htmlans: ``
-    },
-    {
-      keys: ['thank','thanks','thankyou','appreciate','great','awesome','perfect','wonderful'],
-      ans: `You`re so welcome! 🌸 Sam & Sofia are counting down the days to celebrate with you. Is there anything else you'd like to know?'
-    }
-  ];
-
-  function getBotReply(text){
-    var t = text.toLowerCase().replace(/[^a-z0-9 ]/g,'');
-    var words = t.split(/\s+/);
-    var best = null, bestScore = 0;
-    for(var i=0;i<KB.length;i++){
-      var score=0;
-      for(var j=0;j<KB[i].keys.length;j++){
-        if(t.indexOf(KB[i].keys[j])!==-1) score+=2;
-        else for(var k=0;k<words.length;k++) if(words[k].indexOf(KB[i].keys[j])!==-1 || KB[i].keys[j].indexOf(words[k])!==-1) score+=1;
-      }
-      if(score>bestScore){bestScore=score;best=KB[i];}
-    }
-    if(bestScore>0) return best.ans;
-    return "I'm not sure about that one! 🙏 For anything specific, feel free to reach out to Sam & Sofia directly. Is there anything else I can help with?";
-  }
-
-  var CHIP_SETS = [
-    ['📅 Wedding date?','📍 Venue?','🎉 All events?','⏰ Event times?'],
-    ['🌿 Mehndi?','🌼 Haldi?','🎶 Sangeet?','💍 Reception?'],
-    ['👗 Dress code?','💌 RSVP?','🎁 Gifts & Shagun?','🏨 Travel & stay?'],
-    ['🍽️ Food & menu?','👶 Kids welcome?','📸 Photography?','💑 The couple?']
-  ];
-  var chipRound=0;
-
-  function ts(){var d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
-  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-  function $id(id){return document.getElementById(id);}
-  function scrl(){var m=$id('vb-msgs');if(m)m.scrollTop=m.scrollHeight;}
-
-  function addMsg(role,text){
-    if(role!=='system')hist.push({role:role,content:text});
-    var msgs=$id('vb-msgs'), typing=$id('vb-typing');
-    if(!msgs)return;
-    var row=document.createElement('div');
-    row.className='vb-row '+(role==='assistant'?'bot':'me');
-    var avL=role==='assistant'?'<div class="vb-av-sm">🌸</div>':'';
-    var avR=role!=='assistant'?'<div class="vb-av-sm" style="font-size:10px">💍</div>':'';
-    row.innerHTML=avL+'<div class="vb-col"><div class="vb-bbl">'+esc(text)+'</div><div class="vb-ts">'+ts()+'</div></div>'+avR;
-    msgs.insertBefore(row,typing);
-    scrl();
-  }
-
-  function setTyping(v){
-    var t=$id('vb-typing');
-    if(t){t.classList.toggle('on',v);}
-    if(v)scrl();
-  }
-
-  function setChips(arr){
-    var el=$id('vb-chips');if(!el)return;
-    el.innerHTML='';
-    arr.forEach(function(c){
-      var b=document.createElement('button');
-      b.className='vb-chip';b.textContent=c;
-      b.onclick=function(){el.innerHTML='';doSend(c);};
-      el.appendChild(b);
-    });
-  }
-
-  window.vbToggle=function(){
-    isOpen=!isOpen;
-    var fab=$id('vb-fab'), win=$id('vb-win');
-    if(fab)fab.classList.toggle('open',isOpen);
-    if(win)win.classList.toggle('open',isOpen);
-    var dot=$id('vb-notif');if(dot)dot.classList.remove('show');
-    if(isOpen&&!inited){
-      inited=true;
-      setTimeout(function(){
-        addMsg('assistant','Namaste! \uD83D\uDE4F I\'m Vivah, your guide to Sam & Sofia\'s wedding. Tap a button below to find out more!');
-        setChips(CHIP_SETS[0]);
-      },300);
-    }
-    if(isOpen){setTimeout(function(){var i=$id('vb-inp');if(i)i.focus();},350);}
-  };
-
-  function doSend(text){
-    addMsg('user',text);
-    busy=true;
-    var btn=$id('vb-send');if(btn)btn.disabled=true;
-    setTyping(true);
-    var delay=600+Math.random()*500;
-    setTimeout(function(){
-      setTyping(false);
-      var reply=getBotReply(text);
-      addMsg('assistant',reply);
-      chipRound=(chipRound+1)%CHIP_SETS.length;
-      setChips(CHIP_SETS[chipRound]);
-      busy=false;
-      if(btn)btn.disabled=false;
-    },delay);
-  }
-
-  // Called by lottie complete — reveal FAB
-  window.vbReveal=function(){
-    var fab=$id('vb-fab');
-    if(!fab)return;
-    fab.classList.add('ready');
-    setTimeout(function(){var d=$id('vb-notif');if(d)d.classList.add('show');},1400);
-  };
-  // Safety: if lottie already done before this script ran, reveal immediately
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){
-      var fab=$id('vb-fab');
-      if(fab && document.body.style.overflow!=='hidden'){
-        fab.classList.add('ready');
-      }
-    }, 200);
-  });
+  setTimeout(function(){
+    var fab=$id("vb-fab");
+    if(fab&&!fab.classList.contains("ready")&&document.body.style.overflow!=="hidden") fab.classList.add("ready");
+  },3000);
 
 })();
 
